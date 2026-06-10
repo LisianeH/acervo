@@ -10,7 +10,7 @@ router.post('/', controller.insert);
 router.get('/', controller.list);
 
 // READ (por id)
-router.get('/:id', controller.list);
+router.get('/:id', controller.listById);
 
 // UPDATE
 router.put('/:id', controller.update);

@@ -1,18 +1,12 @@
 const repository = require("../repository/usuario_repository.js");
 
 // INSERT
-async function insert(name, category, price) {
-  if (!name || price === undefined) {
-    throw new Error("Nome e preço são obrigatórios");
+async function insert(name, email, password) {
+  if (!name || !email || !password) {
+    throw new Error("Nome, email e senha são obrigatórios");
   }
 
-  if (isNaN(Number(price))) {
-    throw new Error("Preço deve ser um número");
-  }
-
-  price = Number(price);
-
-  return await repository.insert(name, category, price);
+  return await repository.insert(name, email, password);
 }
 
 // FIND BY ID
@@ -21,57 +15,41 @@ async function findById(id) {
     throw new Error("ID inválido");
   }
 
-  const product = await repository.findById(id);
+  const user = await repository.findById(id);
 
-  if (!product) {
-    throw new Error("Não há produtos");
+  if (!user) {
+    throw new Error("Não há usuário com esse ID");
   }
 
   return product;
 }
 
 // UPDATE
-async function update(id, name, price) {
+async function update(id, name, email, password) {
   if (!id || isNaN(id)) {
-    throw new Error("ID inválido");
+    throw new Error("ID inválido do cliente");
   }
 
-  if (!name && price === undefined) {
-    throw new Error("Informe pelo menos nome ou preço");
+  if (!name && !email && !password) {
+    throw new Error("Informe pelo menos um dado para atualização do cliente");
   }
 
-  const product = await repository.findById(id);
+  const user = await repository.findById(id);
 
-  if (!product) {
-    throw new Error("não há produtos");
+  if (!user) {
+    throw new Error("Não há usuário para atualizar");
   }
 
   return await repository.update(
     id,
-    name || product.name,
-    product.category,
-    price !== undefined ? price : product.price,
+    name,
+    email,
+    password,
   );
-}
-
-// DELETE
-async function deleteProduct(id) {
-  if (!id || isNaN(id)) {
-    throw new Error("ID inválido");
-  }
-
-  const product = await repository.findById(id);
-
-  if (!product) {
-    throw new Error("Não há produtos");
-  }
-
-  return await repository.deleteProduct(id);
 }
 
 module.exports = {
   insert,
   findById,
   update,
-  deleteProduct,
 };

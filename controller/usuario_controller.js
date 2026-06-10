@@ -12,7 +12,7 @@ async function list(req, res) {
 };
 
 // READ FOR ID
-async function findById(req, res) {
+async function listById(req, res) {
     try {
         const user = await service.findById(req.params.id);
         res.json(user);
@@ -48,7 +48,7 @@ async function update(req, res) {
 
 module.exports = {
     list,
-    findById,
+    listById,
     insert,
     update
 };
