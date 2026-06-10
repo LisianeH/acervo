@@ -1,0 +1,109 @@
+CREATE TABLE users 
+( 
+ id SERIAL PRIMARY KEY,  
+ name VARCHAR NOT NULL,  
+ email VARCHAR NOT NULL,  
+ password VARCHAR NOT NULL
+); 
+
+CREATE TABLE authors 
+( 
+ id SERIAL PRIMARY KEY,  
+ name VARCHAR NOT NULL,  
+ nationality VARCHAR NOT NULL
+); 
+
+CREATE TABLE books 
+( 
+ id SERIAL PRIMARY KEY,  
+ title VARCHAR NOT NULL,  
+ author INT NOT NULL,  
+ year_publication INT,  
+ page_numbers INT,  
+ note INT,  
+ gender INT  
+); 
+
+CREATE TABLE films 
+( 
+ id SERIAL PRIMARY KEY,  
+ title VARCHAR NOT NULL,  
+ gender INT,  
+ synopsis VARCHAR,  
+ the_cast VARCHAR,  
+ note INT  
+); 
+
+CREATE TABLE series 
+( 
+ id SERIAL PRIMARY KEY,  
+ title VARCHAR NOT NULL,  
+ stream INT,  
+ number_seasons INT NOT NULL,  
+ gender INT,  
+ synopsis VARCHAR  
+); 
+
+CREATE TYPE reading_status AS ENUM (
+    'A_LER',
+    'LENDO',
+    'CONCLUIDO'
+);
+
+CREATE TABLE reading_log 
+( 
+ the_user INT,  
+ book INT,  
+ status reading_status NOT NULL  
+); 
+
+CREATE TABLE gender 
+( 
+ id SERIAL PRIMARY KEY,  
+ name VARCHAR NOT NULL  
+); 
+
+CREATE TYPE film_status AS ENUM (
+    'A_VER',
+    'CONCLUIDO'
+);
+
+CREATE TABLE film_registration 
+( 
+ the_user INT,  
+ film INT,  
+ status film_status NOT NULL  
+); 
+
+CREATE TABLE streams 
+( 
+ id SERIAL PRIMARY KEY,  
+ name VARCHAR NOT NULL,  
+ description VARCHAR 
+); 
+
+CREATE TYPE series_status AS ENUM (
+    'A_VER',
+    'ASSISTINDO',
+    'CONCLUIDO'
+);
+
+CREATE TABLE season_log 
+( 
+ the_user INT,  
+ serie INT,  
+ season INT NOT NULL,  
+ status series_status NOT NULL  
+); 
+
+ALTER TABLE books ADD FOREIGN KEY(author) REFERENCES authors (id);
+ALTER TABLE books ADD FOREIGN KEY(gender) REFERENCES gender (id);
+ALTER TABLE films ADD FOREIGN KEY(gender) REFERENCES gender (id);
+ALTER TABLE series ADD FOREIGN KEY(stream) REFERENCES streams (id);
+ALTER TABLE series ADD FOREIGN KEY(gender) REFERENCES gender (id);
+ALTER TABLE reading_log ADD FOREIGN KEY(the_user) REFERENCES users (id);
+ALTER TABLE reading_log ADD FOREIGN KEY(book) REFERENCES books (id);
+ALTER TABLE film_registration ADD FOREIGN KEY(the_user) REFERENCES users (id);
+ALTER TABLE film_registration ADD FOREIGN KEY(film) REFERENCES films (id);
+ALTER TABLE season_log ADD FOREIGN KEY(the_user) REFERENCES users (id);
+ALTER TABLE season_log ADD FOREIGN KEY(serie) REFERENCES series (id);
