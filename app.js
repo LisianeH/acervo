@@ -4,9 +4,8 @@ const PORT = 3002;
 
 app.use(express.json());
 
-const usuarioRouter = require("./router/usuario_router.js");
-
-app.use("/api/usuarios", usuarioRouter);
+const userRouter = require("./router/user_router.js");
+app.use("/api/user", userRouter);
 
 // Tratamento de erro, com rota não encontrada
 app.use((req, res) => {

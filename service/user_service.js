@@ -1,4 +1,4 @@
-const repository = require("../repository/usuario_repository.js");
+const repository = require("../repository/user_repository.js");
 
 // INSERT
 async function insert(name, email, password) {
