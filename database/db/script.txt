@@ -30,8 +30,7 @@ CREATE TABLE films
  title VARCHAR NOT NULL,  
  gender INT,  
  synopsis VARCHAR,  
- the_cast VARCHAR,  
- note INT  
+ the_cast VARCHAR  
 ); 
 
 CREATE TABLE series 
@@ -72,7 +71,8 @@ CREATE TABLE film_registration
 ( 
  the_user INT,  
  film INT,  
- status film_status NOT NULL  
+ status film_status NOT NULL,
+ note INT
 ); 
 
 CREATE TABLE streams 
