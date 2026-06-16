@@ -1,0 +1,178 @@
+{
+  "info": {
+    "_postman_id": "af8c5809-bdc8-4234-a04d-469fa0339200",
+    "name": "acerto",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53954160",
+    "_collection_link": "https://go.postman.co/collection/53954160-af8c5809-bdc8-4234-a04d-469fa0339200?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "gender",
+      "item": [
+        {
+          "name": "GENDER - READ ALL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/gender",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "gender"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GENDER - READ FIND FOR NAME",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/gender/{name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "gender",
+                "{name}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GENDER - DELETE FOR ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/produtos/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "produtos",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GENDER - UPDATE FOR ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\",\r\n  \"category\": \"{category}\",\r\n  \"price\": {price}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/produtos/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "produtos",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GENDER - CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/gender",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "gender"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "USER - CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\",\r\n  \"email\": \"{email}\",\r\n  \"password\": \"{password}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "acervo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projeto Organizador de Livros, Filmes e Séries desenvolvido na cadeira de APIs",
   "homepage": "https://github.com/LisianeH/acervo#readme",
   "bugs": {
     "url": "https://github.com/LisianeH/acervo/issues"
@@ -20,5 +20,6 @@
   "dependencies": {
     "express": "^5.2.1",
     "pg": "^8.21.0"
-  }
+  },
+  "keywords": []
 }
