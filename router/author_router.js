@@ -15,6 +15,6 @@ router.get("/:id", controller.listById);
 router.put("/:id", controller.updateAuthor);
 
 // //DELETE
-// router.delete("/:id", controller.delete);
+router.delete("/:id", controller.deleteAuthor);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const CrudTemplate = require("../crud_template.js");
+console.log(CrudTemplate);
 const TABLE = "authors";
 const authorCrud = new CrudTemplate(TABLE);
 
@@ -15,7 +16,11 @@ async function listById(id) {
 }
 
 async function updateAuthor(id, entity) {
-  return await authorCrud.update(id, entity);
+  await authorCrud.update(id, entity);
+}
+
+async function deleteAuthor(id) {
+  await authorCrud.delete(id);
 }
 
 module.exports = {
@@ -23,4 +28,5 @@ module.exports = {
   listAuthors,
   listById,
   updateAuthor,
+  deleteAuthor,
 };

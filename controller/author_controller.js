@@ -30,10 +30,20 @@ async function updateAuthor(req, res) {
   try {
     const id = req.params.id;
     const entity = req.body;
-    authorService.updateAuthor(id, entity);
+    await authorService.updateAuthor(id, entity);
     res.send();
   } catch (error) {
-    res.status(400).send();
+    res.status(400).send(error.message);
+  }
+}
+
+async function deleteAuthor(req, res) {
+  try {
+    const id = req.params.id;
+    await authorService.deleteAuthor(id);
+    res.send();
+  } catch (error) {
+    res.status(400).send(error.message);
   }
 }
 
@@ -42,4 +52,5 @@ module.exports = {
   listAuthors,
   listById,
   updateAuthor,
+  deleteAuthor,
 };

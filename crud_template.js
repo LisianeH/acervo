@@ -1,5 +1,4 @@
 const pool = require("./database/database.js");
-const { listAuthors } = require("./service/author_service.js");
 
 class CrudTemplate {
   #table;
@@ -25,7 +24,9 @@ class CrudTemplate {
 
       return result.rows[0];
     } catch (error) {
-      throw new Error(`an error was ocurred: ${table} - ${error.message}`);
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
     }
   }
 
@@ -38,8 +39,8 @@ class CrudTemplate {
 
   async listById(id) {
     try {
-      const query = `SELECT * FROM ${this.#table} WHERE id = ${id}`;
-      const result = await pool.query(query);
+      const query = `SELECT * FROM ${this.#table} WHERE id = $1`;
+      const result = await pool.query(query, [id]);
 
       const entity = result.rows[0];
 
@@ -47,54 +48,44 @@ class CrudTemplate {
 
       return result.rows[0];
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
     }
   }
 
   async update(id, newData) {
     try {
-      const entity = await this.listById(id);
+      const keys = Object.keys(newData).filter((key) => key !== "id");
 
-      const keys = Object.keys(newData);
-      const values = Object.values(newData);
+      const values = keys.map((key) => newData[key]);
 
       const placeholders = Array.from({ length: keys.length }, (_, index) => {
         if (keys[index] === "id") return undefined;
-        return `${keys[index]} = \'${values[index]}\'`;
-      })
-        .filter(Boolean)
-        .join(",");
+        return `${keys[index]} = $${index + 1}`;
+      }).filter(Boolean);
+      const query = `UPDATE ${this.#table} SET ${placeholders.join(",")} WHERE id = $${placeholders.length + 1}`;
 
-      const query = `UPDATE ${this.#table} SET ${placeholders} WHERE id = ${id}`;
-
-      console.log(query);
-
-      await pool.query(query);
+      const result = await pool.query(query, [...values, id]);
+      if (result.rowCount === 0) throw new Error("entity not found!");
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
+  }
+
+  async delete(id) {
+    try {
+      const query = `DELETE FROM ${this.#table} WHERE id = $1`;
+      const result = pool.query(query, [id]);
+      if (result.rowCount === 0) throw new Error("entity not found!");
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
     }
   }
 }
-
-// async function insert(entityJson, table) {
-//   try {
-//     const fields = Object.keys(entityJson).join(", ");
-
-//     const values = Object.values(entityJson);
-
-//     const preparedStatement = Array.from(
-//       { length: values.length },
-//       (element, index) => `$${Number(index + 1)}`,
-//     ).join(",");
-
-//     const query = `INSERT INTO ${table} (${fields}) VALUES (${preparedStatement})`;
-
-//     await pool.query(query, values);
-
-//     return entityJson;
-//   } catch (error) {
-//     throw new Error(`an error was ocurred: ${table} - ${error.message}`);
-//   }
-// }
 
 module.exports = CrudTemplate;

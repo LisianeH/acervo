@@ -13,7 +13,11 @@ async function listById(id) {
 }
 
 async function updateAuthor(id, entity) {
-  return await repository.updateAuthor(id, entity);
+  await repository.updateAuthor(id, entity);
+}
+
+async function deleteAuthor(id) {
+  await repository.deleteAuthor(id);
 }
 
 module.exports = {
@@ -21,4 +25,5 @@ module.exports = {
   listAuthors,
   listById,
   updateAuthor,
+  deleteAuthor,
 };
