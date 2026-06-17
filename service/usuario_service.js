@@ -12,7 +12,7 @@ async function insert(name, category, price) {
 
   price = Number(price);
 
-  return await repository.insert(name, category, price);
+  return await repository.insertUser(name, category, price);
 }
 
 // FIND BY ID
