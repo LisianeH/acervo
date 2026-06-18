@@ -11,8 +11,8 @@ async function listAuthors() {
   return await authorCrud.list();
 }
 
-async function listById(id) {
-  return await authorCrud.listById(id);
+async function findById(id) {
+  return await authorCrud.findById(id);
 }
 
 async function updateAuthor(id, entity) {
@@ -26,7 +26,7 @@ async function deleteAuthor(id) {
 module.exports = {
   insertAuthor,
   listAuthors,
-  listById,
+  findById,
   updateAuthor,
   deleteAuthor,
 };

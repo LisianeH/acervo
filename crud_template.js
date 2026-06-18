@@ -37,12 +37,14 @@ class CrudTemplate {
     return result.rows;
   }
 
-  async listById(id) {
+  async findById(id) {
     try {
       const query = `SELECT * FROM ${this.#table} WHERE id = $1`;
       const result = await pool.query(query, [id]);
 
       const entity = result.rows[0];
+
+      console.log(entity);
 
       if (!entity) throw new Error("entity not found.");
 
@@ -64,10 +66,12 @@ class CrudTemplate {
         if (keys[index] === "id") return undefined;
         return `${keys[index]} = $${index + 1}`;
       }).filter(Boolean);
-      const query = `UPDATE ${this.#table} SET ${placeholders.join(",")} WHERE id = $${placeholders.length + 1}`;
+      const query = `UPDATE ${this.#table} SET ${placeholders.join(",")} WHERE id = $${placeholders.length + 1} RETURNING *`;
 
       const result = await pool.query(query, [...values, id]);
       if (result.rowCount === 0) throw new Error("entity not found!");
+
+      return result.rows[0];
     } catch (error) {
       throw new Error(
         `an error was ocurred: ${this.#table} - ${error.message}`,

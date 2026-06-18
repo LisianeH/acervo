@@ -1,77 +1,44 @@
 const repository = require("../repository/usuario_repository.js");
 
 // INSERT
-async function insert(name, category, price) {
-  if (!name || price === undefined) {
-    throw new Error("Nome e preço são obrigatórios");
-  }
-
-  if (isNaN(Number(price))) {
-    throw new Error("Preço deve ser um número");
-  }
-
-  price = Number(price);
-
-  return await repository.insertUser(name, category, price);
+async function insertUser(entity) {
+  return await repository.insertUser(entity);
 }
 
 // FIND BY ID
-async function findById(id) {
+async function findUserById(id) {
   if (!id || isNaN(id)) {
     throw new Error("ID inválido");
   }
 
-  const product = await repository.findById(id);
+  return await repository.findUserById(id);
+}
 
-  if (!product) {
-    throw new Error("Não há produtos");
-  }
-
-  return product;
+async function findAllUsers() {
+  return await repository.listAllUsers();
 }
 
 // UPDATE
-async function update(id, name, price) {
+async function updateUser(id, entity) {
   if (!id || isNaN(id)) {
     throw new Error("ID inválido");
   }
-
-  if (!name && price === undefined) {
-    throw new Error("Informe pelo menos nome ou preço");
-  }
-
-  const product = await repository.findById(id);
-
-  if (!product) {
-    throw new Error("não há produtos");
-  }
-
-  return await repository.update(
-    id,
-    name || product.name,
-    product.category,
-    price !== undefined ? price : product.price,
-  );
+  return await repository.updateUser(id, entity);
 }
 
 // DELETE
-async function deleteProduct(id) {
+async function deleteUser(id) {
   if (!id || isNaN(id)) {
     throw new Error("ID inválido");
   }
 
-  const product = await repository.findById(id);
-
-  if (!product) {
-    throw new Error("Não há produtos");
-  }
-
-  return await repository.deleteProduct(id);
+  await repository.deleteUser(id);
 }
 
 module.exports = {
-  insert,
-  findById,
-  update,
-  deleteProduct,
+  insertUser,
+  findUserById,
+  updateUser,
+  deleteUser,
+  findAllUsers,
 };
