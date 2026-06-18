@@ -1,18 +1,18 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const controller = require('../controller/usuario_controller.js');
+const controller = require("../controller/usuario_controller.js");
 
 // CREATE
-router.post('/', controller.insert);
+router.post("/", controller.insert);
 
 // READ
-router.get('/', controller.list);
+router.get("/", controller.list);
 
 // READ (por id)
-router.get('/:id', controller.list);
+router.get("/:id", controller.findById);
 
 // UPDATE
-router.put('/:id', controller.update);
+router.put("/:id", controller.update);
 
 module.exports = router;
