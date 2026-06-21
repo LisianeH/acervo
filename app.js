@@ -7,9 +7,11 @@ app.use(express.json());
 
 const usuarioRouter = require("./router/usuario_router.js");
 const authorRouter = require("./router/author_router.js");
+const genderRouter = require("./router/gender_router.js");
 
 app.use(REQUEST_MAPPING + "usuarios", usuarioRouter);
 app.use(REQUEST_MAPPING + "authors", authorRouter);
+app.use(REQUEST_MAPPING + "genders", genderRouter);
 
 // Tratamento de erro, com rota não encontrada
 app.use((req, res) => {
