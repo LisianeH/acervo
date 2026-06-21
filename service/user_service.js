@@ -1,4 +1,4 @@
-const repository = require("../repository/usuario_repository.js");
+const repository = require("../repository/user_repository.js");
 
 // INSERT
 async function insertUser(entity) {
@@ -11,7 +11,13 @@ async function findUserById(id) {
     throw new Error("ID inválido");
   }
 
-  return await repository.findUserById(id);
+  const user = await repository.findUserById(id);
+
+  if (!user) {
+    throw new Error(`Usuário com ID ${id} não encontrado`);
+  }
+
+  return user;
 }
 
 async function findAllUsers() {

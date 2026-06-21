@@ -5,10 +5,10 @@ const REQUEST_MAPPING = "/api/";
 
 app.use(express.json());
 
-const usuarioRouter = require("./router/usuario_router.js");
+const userRouter = require("./router/user_router.js");
 const authorRouter = require("./router/author_router.js");
 
-app.use(REQUEST_MAPPING + "usuarios", usuarioRouter);
+app.use(REQUEST_MAPPING + "users", userRouter);
 app.use(REQUEST_MAPPING + "authors", authorRouter);
 
 // Tratamento de erro, com rota não encontrada

@@ -1,5 +1,5 @@
-const service = require("../service/usuario_service.js");
-const repository = require("../repository/usuario_repository.js");
+const service = require("../service/user_service.js");
+const repository = require("../repository/user_repository.js");
 
 // READ
 async function list(req, res) {
