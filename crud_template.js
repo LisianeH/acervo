@@ -56,6 +56,19 @@ class CrudTemplate {
     }
   }
 
+  async findNameLike(name) {
+    try {
+      const query = `SELECT * FROM ${this.#table} WHERE name ILIKE $1`;
+      const result = await pool.query(query, [`%${name}%`]);
+
+      return result.rows;
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
+}
+
   async update(id, newData) {
     try {
       const keys = Object.keys(newData).filter((key) => key !== "id");
