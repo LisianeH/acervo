@@ -280,6 +280,142 @@
       ]
     },
     {
+      "name": "serie",
+      "item": [
+        {
+          "name": "SERIE - READ ALL",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/series",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - READ FIND BY NAME",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/series/{name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series",
+                "{name}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - DELETE FOR ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/series/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - UPDATE FOR ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"{title}\",\r\n  \"stream\": 0,\r\n  \"number_seasons\": 0,\r\n  \"gender\": 0,\r\n  \"synopsis\": \"{synopsis}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/series/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"{title}\",\r\n  \"stream\": 0,\r\n  \"number_seasons\": 0,\r\n  \"gender\": 0,\r\n  \"synopsis\": \"{synopsis}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/series",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "user",
       "item": [
         {
