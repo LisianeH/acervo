@@ -37,24 +37,18 @@ class CrudTemplate {
     return result.rows;
   }
 
-  async findById(id) {
-    try {
-      const query = `SELECT * FROM ${this.#table} WHERE id = $1`;
-      const result = await pool.query(query, [id]);
+async findById(id) {
+  try {
+    const query = `SELECT * FROM ${this.#table} WHERE id = $1`;
+    const result = await pool.query(query, [id]);
 
-      const entity = result.rows[0];
-
-      console.log(entity);
-
-      if (!entity) throw new Error("entity not found.");
-
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(
-        `an error was ocurred: ${this.#table} - ${error.message}`,
-      );
-    }
+    return result.rows[0] || null;
+  } catch (error) {
+    throw new Error(
+      `an error was ocurred: ${this.#table} - ${error.message}`,
+    );
   }
+}
 
   async findNameLike(name) {
     try {
