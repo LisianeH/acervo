@@ -8,10 +8,11 @@ app.use(express.json());
 const userRouter = require("./router/user_router.js");
 const authorRouter = require("./router/author_router.js");
 const genderRouter = require("./router/gender_router.js");
+const streamRouter = require("./router/stream_router.js");
 
 app.use(REQUEST_MAPPING + "users", userRouter);
 app.use(REQUEST_MAPPING + "authors", authorRouter);
-app.use(REQUEST_MAPPING + "genders", genderRouter);
+app.use(REQUEST_MAPPING + "streams", streamRouter);
 
 // Tratamento de erro, com rota não encontrada
 app.use((req, res) => {

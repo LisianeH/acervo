@@ -144,6 +144,142 @@
       ]
     },
     {
+      "name": "stream",
+      "item": [
+        {
+          "name": "STREAM - READ ALL",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/streams",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "streams"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "STREAM - READ FIND BY NAME",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/streams/{name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "streams",
+                "{name}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "STREAM - DELETE FOR ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/streams/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "streams",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "STREAM - UPDATE FOR ID",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\",\r\n  \"description\": \"{description}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/streams/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "streams",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "STREAM - CREATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\",\r\n  \"description\": \"{description}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/streams",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "streams"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "user",
       "item": [
         {
