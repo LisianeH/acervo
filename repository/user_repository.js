@@ -1,6 +1,6 @@
 const CrudTemplate = require("../crud_template.js");
 const TABLE = "users";
-const userCrud = new CrudTemplate(TABLE);
+const userCrud = new CrudTemplate(TABLE, { PK: "id" });
 
 async function insertUser(entity) {
   return await userCrud.insert(entity);

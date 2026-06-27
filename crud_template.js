@@ -3,10 +3,14 @@ const pool = require("./database/database.js");
 class CrudTemplate {
   #table;
   #column;
+  #relations;
+  #schema;
 
-  constructor(table, column) {
+  constructor(table, column, relations = {}, schema = "public") {
     this.#table = table;
     this.#column = column;
+    this.#relations = relations;
+    this.#schema = schema;
   }
 
   setColumn(column) {
@@ -37,40 +41,68 @@ class CrudTemplate {
   }
 
   async list() {
-    const query = `SELECT * FROM ${this.#table}`;
+    let query;
+
+    if (!this.#relations.FK) {
+      query = `SELECT * FROM ${this.#table}`;
+    } else {
+      const relationsQuery = this.getRelationsQuery();
+      const fieldsQuery = this.getFieldsQuery();
+
+      query = `SELECT T.*, ${fieldsQuery} FROM ${this.#table} AS T
+        ${relationsQuery}
+        `;
+    }
+
     const result = await pool.query(query);
 
     return result.rows;
   }
 
-async findById(id) {
-  try {
-    const query = `SELECT * FROM ${this.#table} WHERE id = $1`;
-    const result = await pool.query(query, [id]);
+  async findById(id) {
+    try {
+      let query;
 
-    return result.rows[0] || null;
-  } catch (error) {
-    throw new Error(
-      `an error was ocurred: ${this.#table} - ${error.message}`,
-    );
+      if (this.#relations.FK) {
+        const fieldsQuery = this.getFieldsQuery();
+        const relationsQuery = this.getRelationsQuery();
+
+        query = `SELECT T.*, ${fieldsQuery} FROM ${this.#table} AS T
+        ${relationsQuery}
+        WHERE T.${this.#relations.PK} = $1
+        `;
+      } else {
+        query = `SELECT * FROM ${this.#table} WHERE ${this.#relations.PK} = $1`;
+      }
+
+      const result = await pool.query(query, [id]);
+      const entity = result.rows;
+
+      if (!entity) throw new Error("entity not found.");
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
   }
-}
 
-async findBySomething(data, column) {
-  try {
-    const col = column || this.#column;
-    if (!col) throw new Error('column not specified for findBySomething');
+  async findBySomething(data, column) {
+    try {
+      const col = column || this.#column;
+      if (!col) throw new Error('column not specified for findBySomething');
 
-    const query = `SELECT * FROM ${this.#table} WHERE ${col} = $1`;
-    const result = await pool.query(query, [data]);
+      const query = `SELECT * FROM ${this.#table} WHERE ${col} = $1`;
+      const result = await pool.query(query, [data]);
 
-    return result.rows[0] || null;
-  } catch (error) {
-    throw new Error(
-      `an error was ocurred: ${this.#table} - ${error.message}`,
-    );
+      return result.rows[0] || null;
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
   }
-}
 
   async findNameLike(name) {
     try {
@@ -83,7 +115,7 @@ async findBySomething(data, column) {
         `an error was ocurred: ${this.#table} - ${error.message}`,
       );
     }
-}
+  }
 
   async update(id, newData) {
     try {
@@ -95,6 +127,7 @@ async findBySomething(data, column) {
         if (keys[index] === "id") return undefined;
         return `${keys[index]} = $${index + 1}`;
       }).filter(Boolean);
+
       const query = `UPDATE ${this.#table} SET ${placeholders.join(",")} WHERE id = $${placeholders.length + 1} RETURNING *`;
 
       const result = await pool.query(query, [...values, id]);
@@ -118,6 +151,25 @@ async findBySomething(data, column) {
         `an error was ocurred: ${this.#table} - ${error.message}`,
       );
     }
+  }
+
+  getRelationsQuery() {
+    return Array.from(
+      { length: this.#relations.include.length },
+      (element, index) => {
+        const table = this.#relations.include[index];
+        return `INNER JOIN ${table} ON ${table}.id = T.${this.#relations.FK[index]}`;
+      },
+    ).join("\n");
+  }
+
+  getFieldsQuery() {
+    return Array.from(
+      { length: this.#relations.FK.length },
+      (element, index) => {
+        return `row_to_json(${this.#relations.include[index]}.*) AS ${this.#relations.FK[index]}`;
+      },
+    ).join(",");
   }
 }
 

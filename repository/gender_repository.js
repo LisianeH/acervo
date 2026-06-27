@@ -1,7 +1,7 @@
 const CrudTemplate = require("../crud_template.js");
-console.log(CrudTemplate);
+
 const TABLE = "gender";
-const templateCrud = new CrudTemplate(TABLE);
+const templateCrud = new CrudTemplate(TABLE, { PK: "id" });
 
 async function insert(entity) {
   return await templateCrud.insert(entity);

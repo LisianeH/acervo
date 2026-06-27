@@ -11,19 +11,21 @@ const genderRouter = require("./router/gender_router.js");
 const streamRouter = require("./router/stream_router.js");
 const seriesRouter = require("./router/serie_router.js");
 const filmRouter = require("./router/film_router.js");
+const bookRouter = require("./router/book_router.js");
 
 app.use(express.json());
 
 app.post(REQUEST_MAPPING + "login", loginController.validateLogin);
 
 app.use(authMiddleware.verifyAcesso);
+
 app.use(REQUEST_MAPPING + "users", userRouter);
 app.use(REQUEST_MAPPING + "authors", authorRouter);
 app.use(REQUEST_MAPPING + "genders", genderRouter);
 app.use(REQUEST_MAPPING + "streams", streamRouter);
 app.use(REQUEST_MAPPING + "series", seriesRouter);
 app.use(REQUEST_MAPPING + "films", filmRouter);
-
+app.use(REQUEST_MAPPING + "books", bookRouter);
 
 // Tratamento de erro, com rota não encontrada
 app.use((req, res) => {

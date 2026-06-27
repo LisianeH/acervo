@@ -1,4 +1,4 @@
-const repository = require("../repository/author.repository.js");
+const repository = require("../repository/author_repository.js");
 
 async function insertAuthor(entityJson) {
   return await repository.insertAuthor(entityJson);
