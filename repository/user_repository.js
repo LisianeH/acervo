@@ -22,10 +22,15 @@ async function findUserById(id) {
   return await userCrud.findById(id);
 }
 
+async function findUserByEmail(email) {
+  return await userCrud.findBySomething(email, "email");
+}
+
 module.exports = {
   insertUser,
   listAllUsers,
   updateUser,
   deleteUser,
   findUserById,
+  findUserByEmail,
 };

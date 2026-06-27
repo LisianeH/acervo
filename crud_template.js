@@ -2,9 +2,15 @@ const pool = require("./database/database.js");
 
 class CrudTemplate {
   #table;
+  #column;
 
-  constructor(table) {
+  constructor(table, column) {
     this.#table = table;
+    this.#column = column;
+  }
+
+  setColumn(column) {
+    this.#column = column;
   }
 
   async insert(entityJson) {
@@ -41,6 +47,22 @@ async findById(id) {
   try {
     const query = `SELECT * FROM ${this.#table} WHERE id = $1`;
     const result = await pool.query(query, [id]);
+
+    return result.rows[0] || null;
+  } catch (error) {
+    throw new Error(
+      `an error was ocurred: ${this.#table} - ${error.message}`,
+    );
+  }
+}
+
+async findBySomething(data, column) {
+  try {
+    const col = column || this.#column;
+    if (!col) throw new Error('column not specified for findBySomething');
+
+    const query = `SELECT * FROM ${this.#table} WHERE ${col} = $1`;
+    const result = await pool.query(query, [data]);
 
     return result.rows[0] || null;
   } catch (error) {
