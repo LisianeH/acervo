@@ -52,7 +52,7 @@ async findById(id) {
 
   async findNameLike(name) {
     try {
-      const query = `SELECT * FROM ${this.#table} WHERE name ILIKE $1`;
+      const query = `SELECT * FROM ${this.#table} WHERE title ILIKE $1`;
       const result = await pool.query(query, [`%${name}%`]);
 
       return result.rows;
