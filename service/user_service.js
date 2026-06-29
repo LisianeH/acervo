@@ -44,7 +44,7 @@ async function updateUser(id, entity) {
   }
 
     const userToUpdate = { ...entity };
-    userToUpdate.senha = await bcrypt.hash(userToUpdate.password, 10);
+    userToUpdate.password = await bcrypt.hash(userToUpdate.password, 10);
 
     return await repository.updateUser(id, userToUpdate);
 }

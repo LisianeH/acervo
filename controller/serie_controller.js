@@ -3,7 +3,8 @@ const service = require("../service/serie_service.js");
 async function insert(req, res) {
   try {
     const serieJson = req.body;
-    const result = await service.insert(serieJson);
+    const userId = req.user.id;
+    const result = await service.insert(serieJson, userId);
     res.status(201).json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -11,14 +12,12 @@ async function insert(req, res) {
 }
 
 async function list(req, res) {
-  const result = await service.list();
-  res.status(200).json(result);
-}
-
-async function listForName(req, res) {
   try {
-    const title = req.params.title;
-    const result = await service.listForName(title);
+    const userId = req.user.id;
+    const title = req.query.name;
+
+    const result = await service.list(title, userId);
+
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -28,8 +27,9 @@ async function listForName(req, res) {
 async function update(req, res) {
   try {
     const id = req.params.id;
+    const userId = req.user.id;
     const entity = req.body;
-    await service.update(id, entity);
+    await service.update(id, userId, entity);
     res.status(200).json({
       message: "Série atualizada com sucesso."
     });
@@ -53,7 +53,6 @@ async function deleteSerie(req, res) {
 module.exports = {
   insert,
   list,
-  listForName,
   update,
   deleteSerie,
 };

@@ -88,6 +88,50 @@ class CrudTemplate {
     }
   }
 
+  async findAllById(id) {
+    try {
+      let query;
+
+      if (this.#relations.FK) {
+        const fieldsQuery = this.getFieldsQuery();
+        const relationsQuery = this.getRelationsQuery();
+
+        query = `SELECT T.*, ${fieldsQuery} FROM ${this.#table} AS T
+        ${relationsQuery}
+        WHERE T.${this.#relations.PK} = $1`;
+      } else {
+        query = `SELECT * FROM ${this.#table} WHERE ${this.#relations.PK} = $1`;
+      }
+
+      const result = await pool.query(query, [id]);
+
+      return result.rows;
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
+  }
+
+  async findByTwoFields(firstColumn, firstValue, secondColumn, secondValue) {
+    try {
+      const query = `
+        SELECT *
+        FROM ${this.#table}
+        WHERE ${firstColumn} = $1
+        AND ${secondColumn} = $2
+      `;
+
+      const result = await pool.query(query, [firstValue, secondValue]);
+
+      return result.rows[0] || null;
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
+  }
+
   async findBySomething(data, column) {
     try {
       const col = column || this.#column;
@@ -132,6 +176,42 @@ class CrudTemplate {
 
       const result = await pool.query(query, [...values, id]);
       if (result.rowCount === 0) throw new Error("entity not found!");
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
+  }
+
+  async updateWithQualify(serieId, userId, newData) {
+    try {
+      const keys = Object.keys(newData).filter((key) => key !== "id");
+
+      const values = keys.map((key) => newData[key]);
+
+      const placeholders = keys.map((key, index) => {
+        return `${key} = $${index + 1}`;
+      });
+
+      const query = `
+        UPDATE ${this.#table}
+        SET ${placeholders.join(", ")}
+        WHERE the_user = $${keys.length + 1}
+        AND serie = $${keys.length + 2}
+        RETURNING *
+      `;
+
+      const result = await pool.query(query, [
+        ...values,
+        userId,
+        serieId
+      ]);
+
+      if (result.rowCount === 0) {
+        throw new Error("entity not found!");
+      }
 
       return result.rows[0];
     } catch (error) {
