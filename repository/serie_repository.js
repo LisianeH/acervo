@@ -15,6 +15,10 @@ async function listForName(title) {
   return await templateCrud.findNameLike(title);
 }
 
+async function findById(id) {
+  return await templateCrud.findById(id)
+}
+
 async function update(id, entity) {
   await templateCrud.update(id, entity);
 }
@@ -27,6 +31,7 @@ module.exports = {
   insert,
   list,
   listForName,
+  findById,
   update,
   deleteSerie,
 };
