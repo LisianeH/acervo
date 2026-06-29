@@ -12,7 +12,7 @@ async function list() {
 }
 
 async function listForName(id) {
-  return await templateCrud.findNameLike(id);
+  return await templateCrud.findBy(id);
 }
 
 async function update(id, entity) {

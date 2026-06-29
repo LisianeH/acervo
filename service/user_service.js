@@ -46,7 +46,7 @@ async function updateUser(id, entity) {
     const userToUpdate = { ...entity };
     userToUpdate.password = await bcrypt.hash(userToUpdate.password, 10);
 
-    return await repository.updateUser(id, userToUpdate);
+  return await repository.updateUser(id, userToUpdate);
 }
 
 // DELETE
@@ -60,26 +60,27 @@ async function deleteUser(id) {
 
 // LOGIN
 async function verifyLogin(user) {
-    if(!user || !user.email || !user.password) {
-        throw { id: 401, msg: "Email ou senha inexistentes!"}        
-    }
+  if (!user || !user.email || !user.password) {
+    throw { id: 401, msg: "Email ou senha inexistentes!" };
+  }
 
-    let userdb = await repository.findUserByEmail(user.email);
-    if (!userdb) {
-        throw { id: 401, msg: "Email ou senha inválidos!"};
-    }
+  let userdb = await repository.findUserByEmail(user.email);
+  if (!userdb) {
+    throw { id: 401, msg: "Email ou senha inválidos!" };
+  }
 
-    if(userdb) {
-      if(await bcrypt.compare(user.password, userdb.password)) {
-          const token = tokenService.createToken({
-              id: userdb.id,
-              email: userdb.email
-          });
-          return {token: token};
-      }
+  if (userdb) {
+    if (await bcrypt.compare(user.password, userdb.password)) {
+      const token = tokenService.createToken({
+        id: userdb.id,
+        email: userdb.email,
+        role: userdb.role,
+      });
+      return { token: token };
     }
+  }
 
-    throw { id: 401, msg: "Email ou senha inválidos!"};
+  throw { id: 401, msg: "Email ou senha inválidos!" };
 }
 
 module.exports = {
@@ -88,5 +89,5 @@ module.exports = {
   updateUser,
   deleteUser,
   findAllUsers,
-  verifyLogin
+  verifyLogin,
 };

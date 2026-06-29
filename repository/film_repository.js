@@ -1,7 +1,11 @@
 const CrudTemplate = require("../crud_template.js");
-console.log(CrudTemplate);
+
 const TABLE = "films";
-const filmCrud = new CrudTemplate(TABLE);
+const filmCrud = new CrudTemplate(TABLE, {
+  PK: "id",
+  FK: ["gender"],
+  include: ["gender"],
+});
 
 async function insertFilm(entity) {
   return await filmCrud.insert(entity);
@@ -11,8 +15,8 @@ async function listFilms() {
   return await filmCrud.list();
 }
 
-async function findByName(name) {
-  return await filmCrud.findNameLike(name);
+async function findByName(value) {
+  return await filmCrud.findBy("title", value);
 }
 
 async function updateFilm(id, entity) {
@@ -28,5 +32,5 @@ module.exports = {
   listFilms,
   findByName,
   updateFilm,
-  deleteFilm
+  deleteFilm,
 };

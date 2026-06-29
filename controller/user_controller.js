@@ -7,7 +7,7 @@ async function list(req, res) {
     const users = await repository.listAllUsers();
     res.json(users);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -17,7 +17,7 @@ async function findById(req, res) {
     const user = await service.findUserById(req.params.id);
     res.json(user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -28,7 +28,7 @@ async function insert(req, res) {
     const result = await service.insertUser(entity);
     res.status(201).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -41,7 +41,7 @@ async function update(req, res) {
     const user = await service.updateUser(id, entity);
     res.json(user);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
