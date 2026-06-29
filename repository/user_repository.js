@@ -23,7 +23,7 @@ async function findUserById(id) {
 }
 
 async function findUserByEmail(email) {
-  return await userCrud.findBySomething(email, "email");
+  return await userCrud.findBy("email", email);
 }
 
 module.exports = {

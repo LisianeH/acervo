@@ -6,15 +6,10 @@ class CrudTemplate {
   #relations;
   #schema;
 
-  constructor(table, column, relations = {}, schema = "public") {
+  constructor(table, relations = {}, schema = "public") {
     this.#table = table;
-    this.#column = column;
     this.#relations = relations;
     this.#schema = schema;
-  }
-
-  setColumn(column) {
-    this.#column = column;
   }
 
   async insert(entityJson) {
@@ -33,10 +28,12 @@ class CrudTemplate {
       const result = await pool.query(query, values);
 
       return result.rows[0];
-    } catch (error) {
-      throw new Error(
-        `an error was ocurred: ${this.#table} - ${error.message}`,
+    } catch (exception) {
+      const error = new Error(
+        `an error was ocurred: ${this.#table} - ${exception.message}`,
       );
+      error.status = 400;
+      throw error;
     }
   }
 
@@ -81,10 +78,12 @@ class CrudTemplate {
       if (!entity) throw new Error("entity not found.");
 
       return result.rows[0];
-    } catch (error) {
-      throw new Error(
-        `an error was ocurred: ${this.#table} - ${error.message}`,
+    } catch (exception) {
+      const error = new Error(
+        `an error was ocurred: ${this.#table} - ${exception.message}`,
       );
+      error.status = 400;
+      throw error;
     }
   }
 
@@ -148,16 +147,18 @@ class CrudTemplate {
     }
   }
 
-  async findNameLike(name) {
+  async findBy(field, value) {
     try {
-      const query = `SELECT * FROM ${this.#table} WHERE title ILIKE $1`;
-      const result = await pool.query(query, [`%${name}%`]);
+      const query = `SELECT * FROM ${this.#table} WHERE ${field} ILIKE $1`;
+      const result = await pool.query(query, [`%${value}%`]);
 
-      return result.rows;
-    } catch (error) {
-      throw new Error(
-        `an error was ocurred: ${this.#table} - ${error.message}`,
+      return result.rows.length > 1 ? result.rows : result.rows[0];
+    } catch (exception) {
+      const error = new Error(
+        `an error was ocurred: ${this.#table} - ${exception.message}`,
       );
+      error.status = 400;
+      throw error;
     }
   }
 
@@ -178,10 +179,50 @@ class CrudTemplate {
       if (result.rowCount === 0) throw new Error("entity not found!");
 
       return result.rows[0];
-    } catch (error) {
-      throw new Error(
-        `an error was ocurred: ${this.#table} - ${error.message}`,
+    } catch (exception) {
+      const error = new Error(
+        `an error was ocurred: ${this.#table} - ${exception.message}`,
       );
+      error.status = 400;
+      throw error;
+    }
+  }
+
+  async updateWithQualify(serieId, userId, newData) {
+    try {
+      const keys = Object.keys(newData).filter((key) => key !== "id");
+
+      const values = keys.map((key) => newData[key]);
+
+      const placeholders = keys.map((key, index) => {
+        return `${key} = $${index + 1}`;
+      });
+
+      const query = `
+        UPDATE ${this.#table}
+        SET ${placeholders.join(", ")}
+        WHERE the_user = $${keys.length + 1}
+        AND serie = $${keys.length + 2}
+        RETURNING *
+      `;
+
+      const result = await pool.query(query, [
+        ...values,
+        userId,
+        serieId
+      ]);
+
+      if (result.rowCount === 0) {
+        throw new Error("entity not found!");
+      }
+
+      return result.rows[0];
+    } catch (exception) {
+      const error = new Error(
+        `an error was ocurred: ${this.#table} - ${exception.message}`,
+      );
+      error.status = 400;
+      throw error;
     }
   }
 
@@ -226,10 +267,12 @@ class CrudTemplate {
       const query = `DELETE FROM ${this.#table} WHERE id = $1`;
       const result = pool.query(query, [id]);
       if (result.rowCount === 0) throw new Error("entity not found!");
-    } catch (error) {
-      throw new Error(
-        `an error was ocurred: ${this.#table} - ${error.message}`,
+    } catch (exception) {
+      const error = new Error(
+        `an error was ocurred: ${this.#table} - ${exception.message}`,
       );
+      error.status = 400;
+      throw error;
     }
   }
 

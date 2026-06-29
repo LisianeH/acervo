@@ -6,13 +6,17 @@ async function insertBook(req, res) {
     const result = await bookService.insertBook(bookJson);
     res.status(201).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
 async function listBooks(req, res) {
-  const result = await bookService.listBooks();
-  res.status(200).json(result);
+  try {
+    const result = await bookService.listBooks();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(error.status).json({ error: exception.message });
+  }
 }
 
 async function listById(req, res) {
@@ -21,7 +25,7 @@ async function listById(req, res) {
     const result = await bookService.listById(id);
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -32,7 +36,7 @@ async function updateBook(req, res) {
     await bookService.updateBook(id, entity);
     res.send();
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -42,7 +46,7 @@ async function deleteBook(req, res) {
     await bookService.deleteBook(id);
     res.send();
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 

@@ -6,7 +6,7 @@ async function insert(req, res) {
     const result = await service.insert(streamJson);
     res.status(201).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -21,7 +21,7 @@ async function listForName(req, res) {
     const result = await service.listForName(name);
     res.status(200).json(result);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -31,10 +31,10 @@ async function update(req, res) {
     const entity = req.body;
     await service.update(id, entity);
     res.status(200).json({
-      message: "Stream atualizado com sucesso."
+      message: "Stream atualizado com sucesso.",
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
@@ -43,10 +43,10 @@ async function deleteStream(req, res) {
     const id = req.params.id;
     await service.deleteStream(id);
     res.status(200).json({
-      message: "Stream deletado com sucesso."
+      message: "Stream deletado com sucesso.",
     });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(error.status).json({ error: exception.message });
   }
 }
 
