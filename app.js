@@ -4,7 +4,6 @@ const PORT = 3002;
 const REQUEST_MAPPING = "/api/";
 const loginController = require("./controller/login_controller.js");
 const authMiddleware = require("./middleware/auth_middleware");
-const verifyAdminRole = require("./middleware/role_middleware.js");
 
 const userRouter = require("./router/user_router.js");
 const authorRouter = require("./router/author_router.js");
@@ -20,13 +19,13 @@ app.post(REQUEST_MAPPING + "login", loginController.validateLogin);
 
 app.use(authMiddleware.verifyAcesso);
 
-app.use(REQUEST_MAPPING + "users", verifyAdminRole, userRouter);
-app.use(REQUEST_MAPPING + "authors", verifyAdminRole, authorRouter);
-app.use(REQUEST_MAPPING + "genders", verifyAdminRole, genderRouter);
-app.use(REQUEST_MAPPING + "streams", verifyAdminRole, streamRouter);
-app.use(REQUEST_MAPPING + "series", verifyAdminRole, seriesRouter);
-app.use(REQUEST_MAPPING + "films", verifyAdminRole, filmRouter);
-app.use(REQUEST_MAPPING + "books", verifyAdminRole, bookRouter);
+app.use(REQUEST_MAPPING + "users", userRouter);
+app.use(REQUEST_MAPPING + "authors", authorRouter);
+app.use(REQUEST_MAPPING + "genders", genderRouter);
+app.use(REQUEST_MAPPING + "streams", streamRouter);
+app.use(REQUEST_MAPPING + "series", seriesRouter);
+app.use(REQUEST_MAPPING + "films", filmRouter);
+app.use(REQUEST_MAPPING + "books", bookRouter);
 
 // Tratamento de erro, com rota não encontrada
 app.use((req, res) => {
