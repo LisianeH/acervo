@@ -20,7 +20,7 @@ async function list(req, res) {
 
     res.status(200).json(result);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(401).json({ error: error.message });
   }
 }
 

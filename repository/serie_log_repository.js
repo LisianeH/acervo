@@ -2,17 +2,17 @@ const CrudTemplate = require("../crud_template.js");
 const TABLE = "season_log";
 const RELATION = "series";
 
-const templateCrud = new CrudTemplate(TABLE, null, { 
+const templateCrud = new CrudTemplate(TABLE, { 
     PK: "the_user", 
     FK: ["serie", "stream", "gender"], 
     include: ["series", "streams", "gender"] 
 });
 
-const seasonLogTemplate = new CrudTemplate(TABLE, null, {
+const seasonLogTemplate = new CrudTemplate(TABLE, {
     PK: "the_user"
 });
 
-const serieTemplate = new CrudTemplate(RELATION, null, {
+const serieTemplate = new CrudTemplate(RELATION, {
     PK: "id",
     FK: ["stream", "gender"],
     include: ["streams", "gender"]
