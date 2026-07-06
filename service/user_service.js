@@ -4,12 +4,12 @@ const bcrypt = require("bcrypt");
 
 // INSERT
 async function insertUser(entity) {
-  if (!entity || !entity.email || !entity.senha) {
+  if (!entity || !entity.email || !entity.password) {
     throw new Error("Dados do usuário incompletos");
   }
 
   const userToInsert = { ...entity };
-  userToInsert.senha = await bcrypt.hash(userToInsert.senha, 10);
+  userToInsert.password = await bcrypt.hash(userToInsert.password, 10);
 
   return await repository.insertUser(userToInsert);
 }
