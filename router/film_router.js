@@ -9,9 +9,6 @@ router.post("/", controller.insert);
 // READ
 router.get("/", controller.list);
 
-// READ (por id)
-router.get("/:name", controller.findByName);
-
 // UPDATE
 router.put("/:id", controller.update);
 

@@ -188,6 +188,46 @@ class CrudTemplate {
     }
   }
 
+  async updateByFields(conditions, newData) {
+  try {
+    const keys = Object.keys(newData).filter((key) => key !== "id");
+
+    if (keys.length === 0) {
+      return null;
+    }
+
+    const values = keys.map((key) => newData[key]);
+    const placeholders = keys.map((key, index) => `${key} = $${index + 1}`).join(", ");
+    const whereClause = Object.entries(conditions)
+      .map(([column], index) => `${column} = $${keys.length + index + 1}`)
+      .join(" AND ");
+
+    const query = `
+      UPDATE ${this.#table}
+      SET ${placeholders}
+      WHERE ${whereClause}
+      RETURNING *
+    `;
+
+    const result = await pool.query(query, [
+      ...values,
+      ...Object.values(conditions),
+    ]);
+
+    if (result.rowCount === 0) {
+      throw new Error("entity not found!");
+    }
+
+    return result.rows[0];
+  } catch (exception) {
+    const error = new Error(
+      `an error was ocurred: ${this.#table} - ${exception.message}`,
+    );
+    error.status = 400;
+    throw error;
+  }
+}
+
   async updateWithQualify(serieId, userId, newData) {
     try {
       const keys = Object.keys(newData).filter((key) => key !== "id");
