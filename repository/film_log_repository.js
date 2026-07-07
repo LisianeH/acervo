@@ -69,7 +69,7 @@ async function countByFilm(filmId) {
 }
 
 async function deleteFilmRegistration(filmId, userId) {
-    return await templateCrud.deleteWithQualify(filmId, userId);
+    return await templateCrud.deleteWithQualify(filmId, userId, "film");
 }
 
 module.exports = {

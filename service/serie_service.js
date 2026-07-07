@@ -12,8 +12,23 @@ async function insert(entityJson, userId = null, role = null) {
   }
   
   if (role === "USER") {
+    const allowedFields = ["serie", "season", "status"];
+    const forbiddenFields = ["title", "stream", "number_seasons", "gender", "synopsis"];
+    const providedFields = Object.keys(entityJson);
+    
+    // Verificar se está enviando campos de ADMIN
+    const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
+    if (hasForbidenFields) {
+      throw new Error(
+        `Dados inconsistentes. Para USER, envie: {serie, season?, status}. Não envie campos de administrador como title, stream, gender, etc.`
+      );
+    }
+    
+    // Verificar se está faltando campos obrigatórios
     if (!entityJson.serie || !userId) {
-      throw new Error("Usuário deve fornecer ID da série para registrar visualização.");
+      throw new Error(
+        `Dados inconsistentes. Campo obrigatório faltando: 'serie' (ID da série que deseja rastrear).`
+      );
     }
 
     const allowedStatus = ["A_VER", "ASSISTINDO", "CONCLUIDO"];
@@ -61,6 +76,17 @@ async function update(serieId, userId, entity, role = null) {
   }
 
   if (role === "USER") {
+    const forbiddenFields = ["title", "stream", "number_seasons", "gender", "synopsis"];
+    const providedFields = Object.keys(entity);
+    
+    // Verificar se está enviando campos de ADMIN
+    const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
+    if (hasForbidenFields) {
+      throw new Error(
+        `Dados inconsistentes. Para USER, você só pode atualizar: {season, status}. Não envie campos de administrador.`
+      );
+    }
+    
     const allowedStatus = ["A_VER", "ASSISTINDO", "CONCLUIDO"];
 
     if (entity.status && !allowedStatus.includes(entity.status)) {

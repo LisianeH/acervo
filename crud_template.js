@@ -238,15 +238,15 @@ class CrudTemplate {
     }
   }
 
-  async deleteWithQualify(serieId, userId) {
+  async deleteWithQualify(itemId, userId, itemColumnName) {
     try {
       const query = `
         DELETE FROM ${this.#table}
-        WHERE serie = $1
+        WHERE ${itemColumnName} = $1
         AND the_user = $2
       `;
 
-      const result = await pool.query(query, [serieId, userId]);
+      const result = await pool.query(query, [itemId, userId]);
 
       if (result.rowCount === 0) {
         throw new Error("Registro não encontrado!");

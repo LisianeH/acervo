@@ -12,6 +12,17 @@ async function insertFilm(entityJson, userId = null, role = null) {
   }
   
   if (role === "USER") {
+    const allowedFields = ["film", "status", "note"];
+    const forbiddenFields = ["title", "gender", "synopsis", "the_cast"];
+    const providedFields = Object.keys(entityJson);
+    
+    const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
+    if (hasForbidenFields) {
+      throw new Error(
+        "Dados inconsistentes. Envie: {film, status, note}."
+      );
+    }
+    
     if (!entityJson.film || !userId) {
       throw new Error("Usuário deve fornecer ID do filme para registrar.");
     }
@@ -65,6 +76,17 @@ async function updateFilm(filmId, userId, entity, role = null) {
   }
 
   if (role === "USER") {
+    const forbiddenFields = ["title", "gender", "synopsis", "the_cast"];
+    const providedFields = Object.keys(entity);
+    
+    // Verificar se está enviando campos de ADMIN
+    const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
+    if (hasForbidenFields) {
+      throw new Error(
+        `Dados inconsistentes. Para USER, você só pode atualizar: {status, note}. Não envie campos de administrador.`
+      );
+    }
+    
     const allowedStatus = ["A_VER", "CONCLUIDO"];
 
     if (entity.status && !allowedStatus.includes(entity.status)) {

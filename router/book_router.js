@@ -8,13 +8,10 @@ router.post("/", controller.insertBook);
 // READ
 router.get("/", controller.listBooks);
 
-// // READ (por id)
-router.get("/:id", controller.listById);
-
-// // UPDATE
+// UPDATE
 router.put("/:id", controller.updateBook);
 
-// //DELETE
+//DELETE
 router.delete("/:id", controller.deleteBook);
 
 module.exports = router;

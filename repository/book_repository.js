@@ -15,6 +15,10 @@ async function listBooks() {
   return await bookCrud.list();
 }
 
+async function listBooksByTitle(title) {
+  return await bookCrud.findBy("title", title);
+}
+
 async function findById(id) {
   return await bookCrud.findById(id);
 }
@@ -30,6 +34,7 @@ async function deleteBook(id) {
 module.exports = {
   insertBook,
   listBooks,
+  listBooksByTitle,
   findById,
   updateBook,
   deleteBook,

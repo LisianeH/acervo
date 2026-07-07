@@ -69,7 +69,7 @@ async function countBySerie(serieId) {
 }
 
 async function deleteSeasonLog(serieId, userId) {
-    return await templateCrud.deleteWithQualify(serieId, userId);
+    return await templateCrud.deleteWithQualify(serieId, userId, "serie");
 }
 
 
