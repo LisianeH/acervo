@@ -14,7 +14,7 @@ async function insert(req, res) {
 
     res.status(201).json(result);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -24,7 +24,7 @@ async function list(req, res) {
     const films = await service.listFilms();
     res.json(films);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -35,7 +35,7 @@ async function findByName(req, res) {
     const film = await service.findByName(req.params.name);
     res.json(film);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -51,7 +51,7 @@ async function update(req, res) {
       message: "Filme atualizado com sucesso.",
     });
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -64,7 +64,7 @@ async function remove(req, res) {
       message: "Filme removido com sucesso",
     });
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 

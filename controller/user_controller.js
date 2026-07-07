@@ -7,7 +7,7 @@ async function list(req, res) {
     const users = await repository.listAllUsers();
     res.json(users);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -17,7 +17,7 @@ async function findById(req, res) {
     const user = await service.findUserById(req.params.id);
     res.json(user);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -28,7 +28,7 @@ async function insert(req, res) {
     const result = await service.insertUser(entity);
     res.status(201).json(result);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -41,7 +41,16 @@ async function update(req, res) {
     const user = await service.updateUser(id, entity);
     res.json(user);
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 500).json({ error: error.message });
+  }
+}
+
+async function deleteUser(req, res) {
+  try {
+    await service.deleteUser(req.params.id);
+    res.status(200).json({ message: "Usuário removido com sucesso." });
+  } catch (error) {
+    res.status(error.status || 500).json({ error: error.message });
   }
 }
 
@@ -50,4 +59,5 @@ module.exports = {
   findById,
   insert,
   update,
+  deleteUser,
 };

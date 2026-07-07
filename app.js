@@ -5,6 +5,7 @@ const REQUEST_MAPPING = "/api/";
 const loginController = require("./controller/login_controller.js");
 const authMiddleware = require("./middleware/auth_middleware");
 const verifyAdminRole = require("./middleware/role_middleware.js");
+const { swaggerUi, swaggerSpec } = require("./swagger/swagger.js");
 
 const userRouter = require("./router/user_router.js");
 const authorRouter = require("./router/author_router.js");
@@ -15,6 +16,11 @@ const filmRouter = require("./router/film_router.js");
 const bookRouter = require("./router/book_router.js");
 
 app.use(express.json());
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpec);
+});
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.post(REQUEST_MAPPING + "login", loginController.validateLogin);
 
