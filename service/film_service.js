@@ -34,6 +34,16 @@ async function insertFilm(entityJson, userId = null, role = null) {
       throw new Error(`Status inválido. Use: ${allowedStatus.join(", ")}.`);
     }
     
+    if (entityJson.note !== undefined) {
+      if (isNaN(entityJson.note)) {
+        throw new Error("Nota invalida.");
+      }
+
+      if (Number(entityJson.note) < 0.1 || Number(entityJson.note) > 5.0) {
+        throw new Error("A nota deve estar entre 0.1 e 5.0.");
+      }
+    }
+    
     const filmLog = await relational.insertFilmRegistration({
       the_user: userId,
       film: entityJson.film,

@@ -34,10 +34,25 @@ async function insertBook(entityJson, userId, role) {
       error.status = 400;
       throw error;
     }
+    if (entityJson.note !== undefined) {
+      if (isNaN(entityJson.note)) {
+        const error = new Error("Nota inválida.");
+        error.status = 400;
+        throw error;
+      }
+
+      if (Number(entityJson.note) < 0.1 || Number(entityJson.note) > 5.0) {
+        const error = new Error("A nota deve estar entre 0.1 e 5.0.");
+        error.status = 400;
+        throw error;
+      }
+    }
+
     return await relational.insertReadingLog({
       the_user: userId,
       book: entityJson.book,
       status: entityJson.status,
+      note: entityJson.note,
     });
   }
 }

@@ -16,7 +16,6 @@ async function insert(entityJson, userId = null, role = null) {
     const forbiddenFields = ["title", "stream", "number_seasons", "gender", "synopsis"];
     const providedFields = Object.keys(entityJson);
     
-    // Verificar se está enviando campos de ADMIN
     const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
     if (hasForbidenFields) {
       throw new Error(
@@ -24,7 +23,6 @@ async function insert(entityJson, userId = null, role = null) {
       );
     }
     
-    // Verificar se está faltando campos obrigatórios
     if (!entityJson.serie || !userId) {
       throw new Error(
         `Dados inconsistentes. Campo obrigatório faltando: 'serie' (ID da série que deseja rastrear).`
@@ -79,7 +77,6 @@ async function update(serieId, userId, entity, role = null) {
     const forbiddenFields = ["title", "stream", "number_seasons", "gender", "synopsis"];
     const providedFields = Object.keys(entity);
     
-    // Verificar se está enviando campos de ADMIN
     const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
     if (hasForbidenFields) {
       throw new Error(
