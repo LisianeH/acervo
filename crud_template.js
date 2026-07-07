@@ -276,6 +276,28 @@ class CrudTemplate {
     }
   }
 
+  async deleteWithQualify(serieId, userId) {
+    try {
+      const query = `
+        DELETE FROM ${this.#table}
+        WHERE serie = $1
+        AND the_user = $2
+      `;
+
+      const result = await pool.query(query, [serieId, userId]);
+
+      if (result.rowCount === 0) {
+        throw new Error("Registro não encontrado!");
+      }
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
+    }
+  }
+
   getRelationsQuery() {
     return Array.from(
       { length: this.#relations.include.length },

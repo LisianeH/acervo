@@ -74,7 +74,6 @@ async function update(serieId, userId, entity, role = null) {
       );
     }
 
-    // Filtrar apenas os campos permitidos para USER
     const allowedFields = { season: entity.season, status: entity.status };
     const filteredEntity = {};
     
@@ -87,8 +86,28 @@ async function update(serieId, userId, entity, role = null) {
   throw new Error("Não foi possível atualizar série.");
 }
 
-async function deleteSerie(id) {
-  await repository.deleteSerie(id);
+async function deleteSerie(id, userId = null, role = null) {
+  if (!userId) {
+    throw new Error("Usuário não autenticado.");
+  }
+
+  if (role === "USER") {
+    return await relational.deleteSeasonLog(id, userId);
+  }
+
+  if (role === "ADMIN") {
+    const count = await relational.countBySerie(id);
+    
+    if (count > 0) {
+      throw new Error(
+        `Não é possível deletar a série. Existem ${count} usuário(s) usando esta série.`
+      );
+    }
+
+    return await repository.deleteSerie(id);
+  }
+
+  throw new Error("Não foi possível deletar série.");
 }
 
 module.exports = {

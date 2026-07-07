@@ -1,4 +1,5 @@
 const CrudTemplate = require("../crud_template.js");
+const pool = require("../database/database.js");
 const TABLE = "season_log";
 const RELATION = "series";
 
@@ -55,10 +56,28 @@ async function findByUserAndSerie(serieId, userId) {
     );
 }
 
+async function countBySerie(serieId) {
+    try {
+        const query = `SELECT COUNT(*) as count FROM ${TABLE} WHERE serie = $1`;
+        const result = await pool.query(query, [serieId]);
+        return parseInt(result.rows[0].count, 10);
+    } catch (error) {
+        throw new Error(
+            `an error was occurred: ${TABLE} - ${error.message}`,
+        );
+    }
+}
+
+async function deleteSeasonLog(serieId, userId) {
+    return await templateCrud.deleteWithQualify(serieId, userId);
+}
+
 
 module.exports = {
     insertSeasonLog,
     listByUser,
     updateSeasonLog,
     findByUserAndSerie,
+    countBySerie,
+    deleteSeasonLog,
 };

@@ -48,12 +48,15 @@ async function update(req, res) {
 async function deleteSerie(req, res) {
   try {
     const id = req.params.id;
-    await service.deleteSerie(id);
+    const userId = req.user.id;
+    const role = req.user.role;
+    
+    await service.deleteSerie(id, userId, role);
     res.status(200).json({
       message: "Série deletada com sucesso.",
     });
   } catch (error) {
-    res.status(error.status).json({ error: exception.message });
+    res.status(error.status || 400).json({ error: error.message });
   }
 }
 
