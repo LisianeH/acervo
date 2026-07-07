@@ -19,7 +19,7 @@ async function insert(entityJson, userId = null, role = null) {
     const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
     if (hasForbidenFields) {
       throw new Error(
-        `Dados inconsistentes. Para USER, envie: {serie, season?, status}. Não envie campos de administrador como title, stream, gender, etc.`
+        `Dados inconsistentes. Para USER, envie: {serie, season, status}.`
       );
     }
     
