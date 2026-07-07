@@ -44,7 +44,7 @@ async function listByUser(title = null, userId) {
 }
 
 async function updateSeasonLog(serieId, userId, entity) {
-    await templateCrud.updateWithQualify(serieId, userId, entity);
+    await templateCrud.updateWithQualify(serieId, userId, entity, "serie");
 }
 
 async function findByUserAndSerie(serieId, userId) {

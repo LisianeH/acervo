@@ -15,12 +15,19 @@ async function insert(entityJson, userId = null, role = null) {
     if (!entityJson.serie || !userId) {
       throw new Error("Usuário deve fornecer ID da série para registrar visualização.");
     }
+
+    const allowedStatus = ["A_VER", "ASSISTINDO", "CONCLUIDO"];
+    const statusProvided = entityJson.status || "A_VER";
+
+    if (!allowedStatus.includes(statusProvided)) {
+      throw new Error(`Status inválido. Use: ${allowedStatus.join(", ")}.`);
+    }
     
     const serieLog = await relational.insertSeasonLog({
       the_user: userId,
       serie: entityJson.serie,
       season: entityJson.season || 1,
-      status: entityJson.status || "A_VER"
+      status: statusProvided
     });
     return serieLog;
   }
@@ -37,7 +44,11 @@ async function list(title = null, userId = null, myOnly = false) {
     return await relational.listByUser(title, userId);
   }
 
-  return await repository.list(title);
+  if (title) {
+    return await repository.listForName(title);
+  }
+
+  return await repository.list();
 }
 
 async function update(serieId, userId, entity, role = null) {

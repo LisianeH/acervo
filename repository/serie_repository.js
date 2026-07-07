@@ -1,5 +1,4 @@
 const CrudTemplate = require("../crud_template.js");
-console.log(CrudTemplate);
 const TABLE = "series";
 const templateCrud = new CrudTemplate(TABLE, {
   PK: "id",
@@ -16,7 +15,7 @@ async function list() {
 }
 
 async function listForName(title) {
-  return await templateCrud.findNameLike(title);
+  return await templateCrud.findBy("title", title);
 }
 
 async function findById(id) {
