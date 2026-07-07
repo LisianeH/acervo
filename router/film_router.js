@@ -9,7 +9,7 @@ router.post("/", controller.insert);
 // READ
 router.get("/", controller.list);
 
-// READ (por id)
+// READ (for name)
 router.get("/:name", controller.findByName);
 
 // UPDATE

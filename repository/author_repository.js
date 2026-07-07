@@ -13,6 +13,10 @@ async function listAuthors() {
   return await authorCrud.list();
 }
 
+async function listAuthorsByName(name) {
+  return await authorCrud.findBy("name", name);
+}
+
 async function findById(id) {
   return await authorCrud.findById(id);
 }
@@ -28,6 +32,7 @@ async function deleteAuthor(id) {
 module.exports = {
   insertAuthor,
   listAuthors,
+  listAuthorsByName,
   findById,
   updateAuthor,
   deleteAuthor,

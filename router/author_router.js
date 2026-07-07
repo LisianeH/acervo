@@ -8,8 +8,8 @@ router.post("/", controller.insertAuthor);
 // READ
 router.get("/", controller.listAuthors);
 
-// // READ (por id)
-router.get("/:id", controller.listById);
+// // READ (for name)
+router.get("/:name", controller.listForName);
 
 // // UPDATE
 router.put("/:id", controller.updateAuthor);

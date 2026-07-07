@@ -8,8 +8,8 @@ async function listAuthors() {
   return await repository.listAuthors();
 }
 
-async function listById(id) {
-  return await repository.listById(id);
+async function listForName(id) {
+  return await repository.listForName(id);
 }
 
 async function updateAuthor(id, entity) {
@@ -23,7 +23,7 @@ async function deleteAuthor(id) {
 module.exports = {
   insertAuthor,
   listAuthors,
-  listById,
+  listForName,
   updateAuthor,
   deleteAuthor,
 };

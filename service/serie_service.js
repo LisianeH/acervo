@@ -12,15 +12,35 @@ async function insert(entityJson, userId = null, role = null) {
   }
   
   if (role === "USER") {
+    const allowedFields = ["serie", "season", "status"];
+    const forbiddenFields = ["title", "stream", "number_seasons", "gender", "synopsis"];
+    const providedFields = Object.keys(entityJson);
+    
+    const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
+    if (hasForbidenFields) {
+      throw new Error(
+        `Dados inconsistentes. Para USER, envie: {serie, season?, status}. Não envie campos de administrador como title, stream, gender, etc.`
+      );
+    }
+    
     if (!entityJson.serie || !userId) {
-      throw new Error("Usuário deve fornecer ID da série para registrar visualização.");
+      throw new Error(
+        `Dados inconsistentes. Campo obrigatório faltando: 'serie' (ID da série que deseja rastrear).`
+      );
+    }
+
+    const allowedStatus = ["A_VER", "ASSISTINDO", "CONCLUIDO"];
+    const statusProvided = entityJson.status || "A_VER";
+
+    if (!allowedStatus.includes(statusProvided)) {
+      throw new Error(`Status inválido. Use: ${allowedStatus.join(", ")}.`);
     }
     
     const serieLog = await relational.insertSeasonLog({
       the_user: userId,
       serie: entityJson.serie,
       season: entityJson.season || 1,
-      status: entityJson.status || "A_VER"
+      status: statusProvided
     });
     return serieLog;
   }
@@ -37,7 +57,11 @@ async function list(title = null, userId = null, myOnly = false) {
     return await relational.listByUser(title, userId);
   }
 
-  return await repository.list(title);
+  if (title) {
+    return await repository.listForName(title);
+  }
+
+  return await repository.list();
 }
 
 async function update(serieId, userId, entity, role = null) {
@@ -50,6 +74,16 @@ async function update(serieId, userId, entity, role = null) {
   }
 
   if (role === "USER") {
+    const forbiddenFields = ["title", "stream", "number_seasons", "gender", "synopsis"];
+    const providedFields = Object.keys(entity);
+    
+    const hasForbidenFields = providedFields.some(field => forbiddenFields.includes(field));
+    if (hasForbidenFields) {
+      throw new Error(
+        `Dados inconsistentes. Para USER, você só pode atualizar: {season, status}. Não envie campos de administrador.`
+      );
+    }
+    
     const allowedStatus = ["A_VER", "ASSISTINDO", "CONCLUIDO"];
 
     if (entity.status && !allowedStatus.includes(entity.status)) {
@@ -74,7 +108,6 @@ async function update(serieId, userId, entity, role = null) {
       );
     }
 
-    // Filtrar apenas os campos permitidos para USER
     const allowedFields = { season: entity.season, status: entity.status };
     const filteredEntity = {};
     
@@ -87,8 +120,28 @@ async function update(serieId, userId, entity, role = null) {
   throw new Error("Não foi possível atualizar série.");
 }
 
-async function deleteSerie(id) {
-  await repository.deleteSerie(id);
+async function deleteSerie(id, userId = null, role = null) {
+  if (!userId) {
+    throw new Error("Usuário não autenticado.");
+  }
+
+  if (role === "USER") {
+    return await relational.deleteSeasonLog(id, userId);
+  }
+
+  if (role === "ADMIN") {
+    const count = await relational.countBySerie(id);
+    
+    if (count > 0) {
+      throw new Error(
+        `Não é possível deletar a série. Existem ${count} usuário(s) usando esta série.`
+      );
+    }
+
+    return await repository.deleteSerie(id);
+  }
+
+  throw new Error("Não foi possível deletar série.");
 }
 
 module.exports = {

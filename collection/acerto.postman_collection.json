@@ -8,7 +8,7 @@
   },
   "item": [
     {
-      "name": "gender",
+      "name": "gender (only ADMIN)",
       "item": [
         {
           "name": "GENDER - READ ALL",
@@ -144,7 +144,190 @@
       ]
     },
     {
-      "name": "stream",
+      "name": "author (only ADMIN)",
+      "item": [
+        {
+          "name": "AUTHOR - READ ALL",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/authors",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "authors"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTHOR - READ FIND BY NAME",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/authors/{name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "authors",
+                "{name}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTHOR - DELETE FOR ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/authors/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "authors",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTHOR - UPDATE FOR ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\",\r\n  \"nationality\": \"{nationality}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/authors/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "authors",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AUTHOR - CREATE",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{name}\",\r\n  \"nationality\": \"{nationality}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/authors",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "authors"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "stream (only ADMIN)",
       "item": [
         {
           "name": "STREAM - READ ALL",
@@ -283,7 +466,7 @@
       "name": "serie",
       "item": [
         {
-          "name": "SERIE - READ ALL",
+          "name": "SERIE - READ ALL (ADMIN and USER)",
           "request": {
             "auth": {
               "type": "noauth"
@@ -306,19 +489,22 @@
           "response": []
         },
         {
-          "name": "SERIE - READ FIND BY NAME",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "SERIE - READ ALL (USER)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
-            },
             "url": {
-              "raw": "http://localhost:3002/api/series/{name}",
+              "raw": "http://localhost:3002/api/series?my",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -326,15 +512,56 @@
               "port": "3002",
               "path": [
                 "api",
-                "series",
-                "{name}"
+                "series"
+              ],
+              "query": [
+                {
+                  "key": "my",
+                  "value": null
+                }
               ]
             }
           },
           "response": []
         },
         {
-          "name": "SERIE - DELETE FOR ID",
+          "name": "SERIE - READ FIND BY NAME",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/series?name={name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{name}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - DELETE FOR ID (ADMIN and USER)",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -355,7 +582,7 @@
           "response": []
         },
         {
-          "name": "SERIE - UPDATE FOR ID",
+          "name": "SERIE - UPDATE FOR ID (ADMIN)",
           "request": {
             "method": "PUT",
             "header": [],
@@ -369,7 +596,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:3002/api/series/{id}",
+              "raw": "http://localhost:3002/api/series?{id}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -377,15 +604,55 @@
               "port": "3002",
               "path": [
                 "api",
-                "series",
-                "{id}"
+                "series"
+              ],
+              "query": [
+                {
+                  "key": "{id}",
+                  "value": null
+                }
               ]
             }
           },
           "response": []
         },
         {
-          "name": "SERIE - CREATE",
+          "name": "SERIE - UPDATE FOR ID (USER)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"number_seasons\": 0,\r\n  \"status\": \"{status}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/series?{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series"
+              ],
+              "query": [
+                {
+                  "key": "{id}",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - CREATE (ADMIN)",
           "request": {
             "method": "POST",
             "header": [],
@@ -408,6 +675,571 @@
               "path": [
                 "api",
                 "series"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SERIE - CREATE (USER)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"serie\": \"{idSerie}\",\r\n  \"number_seasons\": 0,\r\n  \"status\": \"{status}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/series",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "series"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "film",
+      "item": [
+        {
+          "name": "FILM - READ ALL (ADMIN and USER)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/films",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - READ ALL (USER)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/films?my",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films"
+              ],
+              "query": [
+                {
+                  "key": "my",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - READ FIND BY NAME",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/films?name={name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{name}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - DELETE FOR ID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/films/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - UPDATE FOR ID (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"{title}\",\r\n  \"gender\": 0,\r\n  \"synopsis\": \"synopsis\",\r\n  \"the_cast\": \"the_cast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/films/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - UPDATE FOR ID (USER)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"{status}\",\r\n  \"note\": 0.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/films/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - CREATE (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"{title}\",\r\n  \"gender\": 0,\r\n  \"synopsis\": \"synopsis\",\r\n  \"the_cast\": \"the_cast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/films",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FILM - CREATE (USER)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"film\": 0,\r\n  \"status\": \"{status}\",\r\n  \"note\": 0.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/films",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "films"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "book",
+      "item": [
+        {
+          "name": "BOOK - READ ALL (ADMIN and USER)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/books",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - READ ALL (USER)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/books?my",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "my",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - READ FIND BY NAME",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"mouse\",\r\n  \"category\": \"eletro\",\r\n  \"price\": 50\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/books?name={name}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{name}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - DELETE FOR ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3002/api/books/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - UPDATE FOR ID (ADMIN)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"{title}\",\r\n  \"gender\": 0,\r\n  \"synopsis\": \"synopsis\",\r\n  \"the_cast\": \"the_cast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/books/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - UPDATE FOR ID (USER)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"{status}\",\r\n  \"note\": 0.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/books/{id}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books",
+                "{id}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - CREATE (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"{title}\",\r\n  \"author\": 0,\r\n  \"year_publication\": 2000,\r\n  \"page_numbers\": 0,\r\n  \"gender\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/books",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BOOK - CREATE (USER)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"book\": 0,\r\n  \"status\": \"{status}\",\r\n  \"note\": 0.0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3002/api/books",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3002",
+              "path": [
+                "api",
+                "books"
               ]
             }
           },
@@ -547,6 +1379,35 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "LOGIN",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"lisiane@email.com\",\r\n    \"password\": \"1234\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3002/api/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3002",
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }

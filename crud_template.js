@@ -188,7 +188,7 @@ class CrudTemplate {
     }
   }
 
-  async updateWithQualify(serieId, userId, newData) {
+  async updateWithQualify(itemId, userId, newData, itemColumnName) {
     try {
       const keys = Object.keys(newData).filter((key) => key !== "id");
 
@@ -202,52 +202,14 @@ class CrudTemplate {
         UPDATE ${this.#table}
         SET ${placeholders.join(", ")}
         WHERE the_user = $${keys.length + 1}
-        AND serie = $${keys.length + 2}
+        AND ${itemColumnName} = $${keys.length + 2}
         RETURNING *
       `;
 
       const result = await pool.query(query, [
         ...values,
         userId,
-        serieId
-      ]);
-
-      if (result.rowCount === 0) {
-        throw new Error("entity not found!");
-      }
-
-      return result.rows[0];
-    } catch (exception) {
-      const error = new Error(
-        `an error was ocurred: ${this.#table} - ${exception.message}`,
-      );
-      error.status = 400;
-      throw error;
-    }
-  }
-
-  async updateWithQualify(serieId, userId, newData) {
-    try {
-      const keys = Object.keys(newData).filter((key) => key !== "id");
-
-      const values = keys.map((key) => newData[key]);
-
-      const placeholders = keys.map((key, index) => {
-        return `${key} = $${index + 1}`;
-      });
-
-      const query = `
-        UPDATE ${this.#table}
-        SET ${placeholders.join(", ")}
-        WHERE the_user = $${keys.length + 1}
-        AND serie = $${keys.length + 2}
-        RETURNING *
-      `;
-
-      const result = await pool.query(query, [
-        ...values,
-        userId,
-        serieId
+        itemId
       ]);
 
       if (result.rowCount === 0) {
@@ -273,6 +235,28 @@ class CrudTemplate {
       );
       error.status = 400;
       throw error;
+    }
+  }
+
+  async deleteWithQualify(itemId, userId, itemColumnName) {
+    try {
+      const query = `
+        DELETE FROM ${this.#table}
+        WHERE ${itemColumnName} = $1
+        AND the_user = $2
+      `;
+
+      const result = await pool.query(query, [itemId, userId]);
+
+      if (result.rowCount === 0) {
+        throw new Error("Registro não encontrado!");
+      }
+
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(
+        `an error was ocurred: ${this.#table} - ${error.message}`,
+      );
     }
   }
 
